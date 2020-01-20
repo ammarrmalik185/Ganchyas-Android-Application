@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/baseColor1"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:layout_marginTop="50sp"
+        android:layout_marginBottom="50sp"
+        android:text="Make A New Forum"
+        android:textAlignment="center"
+        android:textColor="?attr/baseColorInvert"
+        android:textSize="24sp" />
+
+    <EditText
+        android:id="@+id/subject"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20sp"
+        android:layout_marginTop="10sp"
+        android:layout_marginRight="20sp"
+        android:layout_marginBottom="10sp"
+        android:backgroundTint="?attr/baseColorInvert"
+        android:ems="10"
+        android:hint="Subject"
+        android:inputType="textPersonName"
+        android:textColor="?attr/baseColorInvert"
+        android:textColorHint="?attr/baseColorInvert"
+        android:textCursorDrawable="@drawable/invert_cursor" />
+
+    <EditText
+        android:id="@+id/mainText"
+        android:layout_width="match_parent"
+        android:layout_height="141dp"
+        android:layout_marginLeft="20sp"
+        android:layout_marginTop="10sp"
+        android:layout_marginRight="20sp"
+        android:layout_marginBottom="10sp"
+        android:backgroundTint="?attr/baseColorInvert"
+        android:ems="10"
+        android:gravity="start|top"
+        android:hint="Write yout post here..."
+        android:inputType="textMultiLine"
+        android:textColor="?attr/baseColorInvert"
+        android:textColorHint="?attr/baseColorInvert"
+        android:textCursorDrawable="@drawable/invert_cursor" />
+
+    <Button
+        android:id="@+id/submitButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50sp"
+        android:layout_marginTop="10sp"
+        android:layout_marginRight="50sp"
+        android:layout_marginBottom="10sp"
+        android:background="?attr/baseColor1"
+        android:backgroundTint="?attr/baseColor1"
+        android:onClick="submitForumAction"
+        android:text="@string/submitButton"
+        android:textColor="?attr/baseColorInvert"
+        android:textColorHint="?attr/baseColor1"
+        android:textColorLink="?attr/baseColor1" />
+
+</LinearLayout>

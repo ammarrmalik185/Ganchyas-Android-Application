@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MessengerActivity"
+    android:background="?attr/baseColor2"
+    >
+
+    <LinearLayout
+        android:id="@+id/forumLinearLayout3Single"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="?attr/baseColor1"
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/messageReceiverPicture"
+            android:layout_width="25dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:padding="5sp"
+
+            />
+
+        <TextView
+            android:id="@+id/messageReceiverName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10sp"
+            android:layout_marginBottom="10sp"
+            android:layout_weight="1"
+            android:gravity="left"
+            android:text="TextView"
+            android:textColor="?attr/baseColorInvert"
+            android:textSize="24sp" />
+
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/messageView"
+        android:layout_width="match_parent"
+        android:layout_height="622dp"
+        android:layout_above="@+id/forumLinearLayout2Single"
+        android:layout_below="@+id/forumLinearLayout3Single"
+        android:layout_marginTop="1dp"
+        android:layout_marginBottom="5dp" />
+
+    <LinearLayout
+        android:id="@+id/forumLinearLayout2Single"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginBottom="0dp"
+        android:background="?attr/baseColor1"
+        android:padding="10dp">
+
+
+        <EditText
+            android:id="@+id/messageToSend"
+            android:layout_width="296dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="?attr/baseColorInvert"
+            android:ems="10"
+            android:hint="Type a message"
+            android:inputType="textPersonName"
+            android:textColor="?attr/baseColorInvert"
+            android:textColorHint="?attr/baseColorInvert"
+            android:textCursorDrawable="@drawable/invert_cursor"
+            />
+
+        <View
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/action_send_message_24dp"
+            android:onClick="sendButtonPressed"
+            />
+
+    </LinearLayout>
+
+
+</RelativeLayout>

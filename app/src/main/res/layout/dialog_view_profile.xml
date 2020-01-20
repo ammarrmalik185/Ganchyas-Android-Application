@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/style_round_dialog"
+    android:orientation="vertical">
+
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profileViewPic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="8dp"
+        tools:srcCompat="@tools:sample/avatars[0]" />
+
+    <TextView
+        android:id="@+id/profileViewNameField"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="0dp"
+        android:gravity="center_horizontal"
+        android:text="@string/nameHint"
+        android:textColor="?attr/baseColorInvert"
+        android:textSize="36sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/profileViewPhoneField"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="16dp"
+        android:gravity="center"
+        android:text="@string/phoneHint"
+        android:textColor="?attr/baseColorInvert" />
+
+    <TextView
+        android:id="@+id/profileViewSectionField"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="16dp"
+        android:gravity="center"
+        android:text="@string/sectionHint"
+        android:textColor="?attr/baseColorInvert" />
+
+    <TextView
+        android:id="@+id/profileViewDateField"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="64dp"
+        android:gravity="center"
+        android:paddingBottom="16dp"
+        android:text="@string/birthDateHint"
+        android:textColor="?attr/baseColorInvert" />
+
+</LinearLayout>

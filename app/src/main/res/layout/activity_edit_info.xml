@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/baseColor1"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginBottom="50dp"
+        android:text="Enter new info"
+        android:textAlignment="center"
+        android:textColor="?attr/baseColorInvert" />
+
+    <EditText
+        android:id="@+id/nameField"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        android:autofillHints=""
+        android:backgroundTint="?attr/baseColorInvert"
+        android:ems="10"
+        android:hint="@string/nameHint"
+        android:inputType="textPersonName"
+        android:textColor="?attr/baseColorInvert"
+        android:textColorHint="?attr/baseColorInvert"
+        android:textCursorDrawable="@drawable/invert_cursor" />
+
+    <EditText
+        android:id="@+id/dateField"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="16dp"
+        android:autofillHints=""
+        android:backgroundTint="?attr/baseColorInvert"
+        android:ems="10"
+        android:hint="@string/birthDateHint"
+        android:inputType="date"
+        android:textColor="?attr/baseColorInvert"
+        android:textColorHint="?attr/baseColorInvert"
+        android:textCursorDrawable="@drawable/invert_cursor" />
+
+    <EditText
+        android:id="@+id/phoneField"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="16dp"
+        android:autofillHints=""
+        android:backgroundTint="?attr/baseColorInvert"
+        android:ems="10"
+        android:hint="@string/phoneHint"
+        android:inputType="number|phone"
+        android:textColor="?attr/baseColorInvert"
+        android:textColorHint="?attr/baseColorInvert"
+        android:textCursorDrawable="@drawable/invert_cursor" />
+
+    <EditText
+        android:id="@+id/sectionField"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="16dp"
+        android:autofillHints=""
+        android:backgroundTint="?attr/baseColorInvert"
+        android:ems="10"
+        android:hint="@string/sectionHint"
+        android:inputType="textPersonName"
+        android:textColor="?attr/baseColorInvert"
+        android:textColorHint="?attr/baseColorInvert"
+        android:textCursorDrawable="@drawable/invert_cursor" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="80dp"
+        android:layout_marginRight="80dp"
+        android:layout_marginBottom="78dp"
+        android:background="?attr/baseColor1"
+        android:onClick="submitButtonAction"
+        android:text="@string/submitButton"
+        android:textColor="?attr/baseColorInvert" />
+</LinearLayout>

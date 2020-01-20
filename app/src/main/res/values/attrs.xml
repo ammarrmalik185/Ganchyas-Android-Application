@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="baseColor1" format="reference|color" />
+    <attr name="baseColor2" format="reference|color" />
+    <attr name="baseColorAccent" format="reference|color" />
+    <attr name="baseColorInvert" format="reference|color" />
+    <attr name="baseColorDark" format="reference|color" />
+    <attr name="forumBorderColor" format="reference|color" />
+    <attr name="forumMainColor" format="reference|color" />
+
+</resources>

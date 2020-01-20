@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/baseColor1"
+    tools:context=".SettingsActivity">
+
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:gravity="center_horizontal"
+                android:text="Color Scheme"
+                android:textColor="?attr/baseColorInvert"
+                android:textSize="24sp" />
+
+            <RadioGroup
+                android:id="@+id/colorSelector"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                tools:layout_editor_absoluteX="108dp"
+                tools:layout_editor_absoluteY="205dp">
+
+                <RadioButton
+                    android:id="@+id/themeDark"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="?attr/baseColorInvert"
+                    android:text="Dark Mode"
+                    android:textColor="?attr/baseColorInvert" />
+
+                <RadioButton
+                    android:id="@+id/themeLight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="?attr/baseColorInvert"
+                    android:text="Light Mode"
+                    android:textColor="?attr/baseColorInvert" />
+
+                <RadioButton
+                    android:id="@+id/themeBlue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="?attr/baseColorInvert"
+                    android:text="Blue Theme"
+                    android:textColor="?attr/baseColorInvert" />
+
+                <RadioButton
+                    android:id="@+id/themeGreen"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:buttonTint="?attr/baseColorInvert"
+                    android:text="Green Theme"
+                    android:textColor="?attr/baseColorInvert" />
+
+            </RadioGroup>
+
+            <Button
+                android:id="@+id/button4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="?attr/baseColor1"
+                android:backgroundTint="?attr/baseColor1"
+                android:onClick="colorApplyButton"
+                android:text="Apply"
+                android:textColor="?attr/baseColorInvert"
+                android:textColorHint="?attr/baseColor1"
+                android:textColorLink="?attr/baseColor1" />
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

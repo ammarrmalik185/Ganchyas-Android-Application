@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_forums"
+        android:icon="@drawable/nav_forums_icon_24dp"
+        android:title="Forums" />
+
+    <item
+        android:id="@+id/nav_message"
+        android:icon="@drawable/nav_message_icon_24dp"
+        android:title="Messaging" />
+
+    <!--    <item-->
+    <!--        android:id="@+id/nav_message"-->
+    <!--        android:title=""-->
+    <!--        android:icon="@drawable/action_write_new_forum_icon_24dp"-->
+    <!--        android:visible="false"-->
+    <!--        />-->
+
+    <item
+        android:id="@+id/nav_location"
+        android:icon="@drawable/nav_location_icon_24dp"
+        android:title="Location" />
+    <item
+        android:id="@+id/nav_notifications"
+        android:icon="@drawable/nav_notifications_icon_24dp"
+        android:title="Notifications" />
+
+</menu>

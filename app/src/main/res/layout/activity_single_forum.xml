@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/forumMainColor"
+    android:paddingBottom="16dp">
+
+        <View
+            android:id="@+id/line4Single"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?attr/forumBorderColor"
+            android:layout_alignParentTop="true"/>
+
+        <LinearLayout
+            android:id="@+id/forumLinearLayout3Single"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10sp"
+            android:orientation="horizontal"
+            android:layout_alignTop="@+id/line4Single"
+            >
+
+            <ImageView
+                android:id="@+id/profilePicForumSingle"
+                android:layout_width="10dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                />
+
+            <TextView
+                android:id="@+id/senderNameSingle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10sp"
+                android:layout_weight="1"
+                android:text="TextView"
+                android:textColor="?attr/baseColorInvert"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/dateSingle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginRight="10sp"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text="TextView"
+                android:textColor="?attr/baseColorInvert" />
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/line2Single"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignBottom="@+id/forumLinearLayout3Single"
+            android:background="?attr/forumBorderColor" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignTop="@+id/line2Single"
+        android:layout_alignBottom="@+id/viewSingle">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/subjectSingle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10sp"
+                android:layout_marginTop="10sp"
+                android:layout_marginBottom="0dp"
+                android:text="TextView"
+                android:textAlignment="textStart"
+                android:textColor="?attr/baseColorInvert"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/mainTextSingle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10sp"
+                android:layout_marginRight="10sp"
+                android:layout_marginBottom="10sp"
+                android:text="TextView"
+                android:textAlignment="textStart"
+                android:textColor="?attr/baseColorInvert"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/forumImageSingle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="0dp"
+                android:layout_marginBottom="0dp"
+                android:paddingLeft="16dp"
+                android:paddingTop="0dp"
+                android:paddingRight="16dp"
+                android:paddingBottom="0dp" />
+        </LinearLayout>
+    </ScrollView>
+
+    <View
+        android:id="@+id/viewSingle"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignTop="@id/forumLinearlayout2Single"
+        android:background="?attr/forumBorderColor" />
+
+    <LinearLayout
+        android:id="@+id/forumLinearlayout2Single"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/dividerLine1Single"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/likeCountDisplaySingle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
+            android:text="TextView"
+            android:textAlignment="center"
+            android:textColor="?attr/baseColorInvert" />
+
+        <TextView
+            android:id="@+id/disLikeCountDisplaySingle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
+            android:text="TextView"
+            android:textAlignment="center"
+            android:textColor="?attr/baseColorInvert" />
+
+        <TextView
+            android:id="@+id/commentCountDisplaySingle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
+            android:text="TextView"
+            android:textAlignment="center"
+            android:textColor="?attr/baseColorInvert" />
+    </LinearLayout>
+
+        <View
+            android:id="@+id/dividerLine1Single"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?attr/forumBorderColor"
+            android:layout_alignTop="@+id/forumLinearLayout1Single"/>
+
+    <LinearLayout
+        android:id="@+id/forumLinearLayout1Single"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="0dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/likeButtonSingle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10sp"
+            android:layout_marginBottom="0dp"
+            android:layout_weight="1"
+            android:background="#00FFFFFF"
+            android:text="Like"
+            android:textColor="#FC20FC00" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="?attr/forumBorderColor" />
+
+        <Button
+            android:id="@+id/dislikeButtonSingle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="0dp"
+            android:layout_weight="1"
+            android:background="#00FFFFFF"
+            android:text="Dislike"
+            android:textColor="#FF0000" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="?attr/forumBorderColor" />
+
+        <Button
+            android:id="@+id/commentButtonSingle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10sp"
+            android:layout_marginBottom="0dp"
+            android:layout_weight="1"
+            android:background="#00FFFFFF"
+            android:text="Comment"
+            android:textColor="#030FFC" />
+    </LinearLayout>
+
+        <View
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?attr/forumBorderColor" />
+
+
+</RelativeLayout>

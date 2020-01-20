@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="?attr/baseColor2"
+    tools:context=".MessagingFragment">
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Conversations"
+        android:textColor="?attr/baseColorInvert"
+        android:textSize="30sp"/>
+
+    <ListView
+        android:id="@+id/listConversations"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/topHeadMessage"
+        android:layout_below="@+id/textView10"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="0dp"
+        android:background="?attr/forumMainColor" />
+
+    <View
+        android:id="@+id/topHeadMessage"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:background="?attr/baseColor1"
+        android:layout_alignParentBottom="true"
+        />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButtonMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:backgroundTint="?attr/baseColor1"
+        android:clickable="true"
+        android:src="@drawable/action_start_new_chat_icon_24dp"
+        app:borderWidth="0dp"
+        app:elevation="0dp"
+        app:rippleColor="?attr/baseColor1" />
+
+</RelativeLayout>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="LightTheme">
+
+
+        <item name="baseColor1">@color/colorPrimaryLite</item>
+        <item name="baseColor2">@color/colorPrimary2Lite</item>
+        <item name="baseColorAccent">@color/colorAccentLite</item>
+        <item name="baseColorInvert">@color/InvertColorLite</item>
+        <item name="baseColorDark">@color/colorPrimaryDarkLite</item>
+        <item name="forumBorderColor">@color/borderDarkLite</item>
+        <item name="forumMainColor">@color/singleForumLite</item>
+
+
+    </style>
+
+    <style name="DarkTheme">
+
+        <item name="baseColor1">@color/colorPrimary</item>
+        <item name="baseColor2">@color/colorPrimary2</item>
+        <item name="baseColorAccent">@color/colorAccent</item>
+        <item name="baseColorInvert">@color/InvertColor</item>
+        <item name="baseColorDark">@color/colorPrimaryDark</item>
+        <item name="forumBorderColor">@color/borderDark</item>
+        <item name="forumMainColor">@color/singleForum</item>
+
+    </style>
+
+    <style name="BlueTheme">
+
+        <item name="baseColor1">@color/colorPrimaryBlue</item>
+        <item name="baseColor2">@color/colorPrimary2Blue</item>
+        <item name="baseColorAccent">@color/colorAccentBlue</item>
+        <item name="baseColorInvert">@color/InvertColorBlue</item>
+        <item name="baseColorDark">@color/colorPrimaryDarkBlue</item>
+        <item name="forumBorderColor">@color/borderDarkBlue</item>
+        <item name="forumMainColor">@color/singleForumBlue</item>
+
+    </style>
+
+    <style name="GreenTheme">
+
+        <item name="baseColor1">@color/colorPrimaryGreen</item>
+        <item name="baseColor2">@color/colorPrimary2Green</item>
+        <item name="baseColorAccent">@color/colorAccentGreen</item>
+        <item name="baseColorInvert">@color/InvertColorGreen</item>
+        <item name="baseColorDark">@color/colorPrimaryDarkGreen</item>
+        <item name="forumBorderColor">@color/borderDarkGreen</item>
+        <item name="forumMainColor">@color/singleForumGreen</item>
+
+    </style>
+
+</resources>

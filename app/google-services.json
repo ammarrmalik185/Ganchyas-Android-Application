@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "835207895014",
+    "firebase_url": "https://ganchyas.firebaseio.com",
+    "project_id": "ganchyas",
+    "storage_bucket": "ganchyas.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:835207895014:android:3aac3bbe2d7e56452be827",
+        "android_client_info": {
+          "package_name": "app.ganchyas"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "835207895014-2t4ic53gsgg8ilc10khlna4hktf7l7vt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "app.ganchyas",
+            "certificate_hash": "632a866515d4b261e958226363ac7cb7c9ed735a"
+          }
+        },
+        {
+          "client_id": "835207895014-k5h5ahkfq0u01diaks67pse6iadq4inh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCn4KOeRTcuXEawQDFcp4IL9kXMveS3-5Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "835207895014-k5h5ahkfq0u01diaks67pse6iadq4inh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

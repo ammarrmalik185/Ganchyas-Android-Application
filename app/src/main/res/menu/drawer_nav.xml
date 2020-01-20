@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <item
+        android:id="@+id/account"
+        android:icon="@drawable/drawer_account_icon_24dp"
+        android:title="Profile" />
+    <item
+        android:id="@+id/settings"
+        android:icon="@drawable/drawer_settings_icon_24dp"
+        android:title="Settings" />
+
+    <item
+        android:id="@+id/logout"
+        android:icon="@drawable/drawer_logout_icon_24dp"
+        android:title="Logout" />
+
+
+</menu>

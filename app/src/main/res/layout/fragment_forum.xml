@@ -1,0 +1,47 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/baseColor2"
+    tools:context=".ForumFragment">
+
+
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeToRefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/topHead"
+        android:layout_alignParentTop="true">
+
+        <ListView
+            android:id="@+id/forumList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </ListView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <View
+        android:id="@+id/topHead"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:background="?attr/baseColor1"
+        android:layout_alignParentBottom="true"
+        />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:backgroundTint="?attr/baseColor1"
+        android:clickable="true"
+        android:src="@drawable/action_write_new_forum_icon_24dp"
+        app:borderWidth="0dp"
+        app:elevation="0dp"
+        app:rippleColor="?attr/baseColor1" />
+
+</RelativeLayout>

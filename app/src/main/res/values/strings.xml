@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Ganchyas</string>
+    <string name="hello_blank_fragment">Blank fragment</string>
+    <string name="passwordHint">Password</string>
+    <string name="emailHint">Email</string>
+    <string name="mainName">The Ganchyas</string>
+    <string name="loginButtonText">Login</string>
+    <string name="newPass2">Retype New Password</string>
+    <string name="newPass">New Password</string>
+    <string name="sectionHint">Section (e.g. BSE - 3A)</string>
+    <string name="nameHint">Full Name</string>
+    <string name="phoneHint">Phone No</string>
+    <string name="birthDateHint">Birth Date</string>
+    <string name="submitButton">Submit</string>
+    <string name="infoPrompt">oh! it seems you\'re new here Please tell us about yourself</string>
+    <string name="navigation_drawer_open">Open Navigation Drawer</string>
+    <string name="navigation_drawer_close">Close Navigation Drawer</string>
+</resources>
