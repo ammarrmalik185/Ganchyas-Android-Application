@@ -17,7 +17,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppThemeDark"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".WriteNewForumVideoActivity"/>
+        <activity android:name=".PatchesActivity"></activity>
+        <activity android:name=".WriteNewForumVideoActivity" />
         <activity
             android:name=".MessengerActivity"
             android:screenOrientation="portrait" />
@@ -25,8 +26,7 @@
         <service
             android:name=".CloudNotifications.NotificationService"
             android:enabled="true"
-            android:exported="true"
-            >
+            android:exported="true">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>

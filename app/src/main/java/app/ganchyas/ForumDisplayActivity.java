@@ -25,6 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import app.ganchyas.NonActivityClasses.CommentPack;
 import app.ganchyas.NonActivityClasses.CommentsAdapter;
@@ -33,7 +34,7 @@ import app.ganchyas.NonActivityClasses.ForumPack;
 import app.ganchyas.NonActivityClasses.LikersDislikersAdapter;
 
 /**
- * Backend of UI (activity_forum_display.xml). Shows a forum in a dedicated Activity.
+ * Shows a forum in a dedicated Activity. Opens when a forum is clicked or when a notification is clicked.
  * @author Paradox
  */
 
@@ -203,21 +204,22 @@ public class ForumDisplayActivity extends AppCompatActivity {
                 ArrayList<CommentPack> commentPacks = displayForum.getCommentPacks();
                 dialog.setContentView(R.layout.dialog_comments);
                 ListView listUsers = dialog.findViewById(R.id.listUsers);
+                Collections.reverse(commentPacks);
                 adapter = new CommentsAdapter(ForumDisplayActivity.this, commentPacks);
                 listUsers.setAdapter(adapter);
                 TextView header = dialog.findViewById(R.id.header);
-                Button submitButtion = dialog.findViewById(R.id.submitButton);
+                Button submitButton = dialog.findViewById(R.id.submitButton);
                 final EditText commentField = dialog.findViewById(R.id.commentField);
 
-                submitButtion.setOnClickListener(new View.OnClickListener() {
+                submitButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         String comment = commentField.getText().toString();
                         if (!comment.equals("")) {
                             adapter.pushComment(comment, displayForum);
-                            toastMessage("Posted Successfully");
+                            CommonMethods.toastMessage(ForumDisplayActivity.this, "Posted Successfully");
                         } else {
-                            toastMessage("please enter a comment");
+                            CommonMethods.toastMessage(ForumDisplayActivity.this, "please enter a comment");
                         }
                     }
                 });
@@ -234,14 +236,6 @@ public class ForumDisplayActivity extends AppCompatActivity {
         };
         completeDatabaseReference.addValueEventListener(listener);
 
-    }
-
-    /**
-     * Displays a Toast Message
-     * @param message Toast message to be displayed
-     */
-    private void toastMessage(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
     /**

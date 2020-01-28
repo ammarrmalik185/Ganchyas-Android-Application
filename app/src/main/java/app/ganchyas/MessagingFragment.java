@@ -1,6 +1,5 @@
 package app.ganchyas;
 
-
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
@@ -31,26 +30,52 @@ import app.ganchyas.NonActivityClasses.UserDataPack;
 import app.ganchyas.NonActivityClasses.NewConversationListAdapter;
 
 /**
- * @author Paradox;
+ * Fragments that shows the users their conversations and allows the starting of new conversations
+ * @author Paradox
  */
 
 public class MessagingFragment extends Fragment {
 
+    /**
+     * A Dialog that open when the new message button is clicked and shows the user a list of users that new conversations can be started with
+     */
     private Dialog usersDialog;
-    private DatabaseReference completeDatabase;
-    private ValueEventListener valueListner;
+    /**
+     * Stores the reference of the root node of the Database
+     */
+    private DatabaseReference completeDatabaseReference;
+    /**
+     * A value event listener for the database reference
+     */
+    private ValueEventListener valueListener;
+    /**
+     * An adapter that dynamically generates UI of a user list
+     */
     private NewConversationListAdapter adapter;
+    /**
+     * Reference to the list of conversations that the user is a part of
+     */
     private ListView conversations;
 
+    /**
+     * Empty Constructor
+     */
     public MessagingFragment() {
         // Required empty public constructor
     }
 
+    /**
+     * Generates the UI of the Fragment
+     * @param inflater An Inflater object to inflate the layout
+     * @param container A parent view where the UI will be placed
+     * @param savedInstanceState An older instance of the fragment (if any)
+     * @return The inflated UI of the Fragment Instance
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        completeDatabase = FirebaseDatabase.getInstance().getReference();
+        completeDatabaseReference = FirebaseDatabase.getInstance().getReference();
         View view = inflater.inflate(R.layout.fragment_messaging, container, false);
         usersDialog = new Dialog(getContext());
         usersDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -58,7 +83,7 @@ public class MessagingFragment extends Fragment {
         usersDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
-                completeDatabase.removeEventListener(valueListner);
+                completeDatabaseReference.removeEventListener(valueListener);
             }
         });
 
@@ -107,12 +132,15 @@ public class MessagingFragment extends Fragment {
 
             }
         };
-        completeDatabase.addValueEventListener(listener);
+        completeDatabaseReference.addValueEventListener(listener);
 
 
         return view;
     }
 
+    /**
+     * Invoked when the start new conversation is pressed. Uses the dialog to show a list of users
+     */
     private void startNewConvoPressed(){
         usersDialog.setContentView(R.layout.dialog_title_and_list);
 
@@ -120,7 +148,7 @@ public class MessagingFragment extends Fragment {
         TextView header = usersDialog.findViewById(R.id.header);
         header.setText("Available Users");
 
-        valueListner = new ValueEventListener() {
+        valueListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
@@ -158,7 +186,7 @@ public class MessagingFragment extends Fragment {
 
             }
         };
-        completeDatabase.addValueEventListener(valueListner);
+        completeDatabaseReference.addValueEventListener(valueListener);
     }
 
 }

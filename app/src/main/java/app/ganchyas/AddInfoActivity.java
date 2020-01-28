@@ -22,7 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import app.ganchyas.NonActivityClasses.CommonMethods;
 
 /**
- * Backend of UI (activity_add_info.xml). Only launches when the data of the user is not available in the database.
+ * Gets the data of the user and adds to the database. Only launches when the data of the user is not available in the database.
  * @author Paradox
  */
 
@@ -122,9 +122,9 @@ public class AddInfoActivity extends AppCompatActivity {
         if (!(name.equals("") || pass1.equals("") || pass2.equals("") ||
                 date.equals("") || section.equals("") || phone.equals(""))) {
             if (pass1.length() < 8) {
-                toastMessage("Password should be more than 8 characters");
+                CommonMethods.toastMessage(AddInfoActivity.this, "Password should be more than 8 characters");
             } else if (!pass1.equals(pass2)) {
-                toastMessage("Passwords do not match");
+                CommonMethods.toastMessage(AddInfoActivity.this, "Passwords do not match");
             } else {
                 saveData(name, phone, date, section, pass1);
                 if (authorized) {
@@ -133,7 +133,7 @@ public class AddInfoActivity extends AppCompatActivity {
                 }
             }
         } else {
-            toastMessage("All Fields are required");
+            CommonMethods.toastMessage(AddInfoActivity.this, "All Fields are required");
         }
 
     }
@@ -147,7 +147,7 @@ public class AddInfoActivity extends AppCompatActivity {
      * @param pass1 The New Password that the user has entered
      */
     private void saveData(String name, String phone, String date, String section, final String pass1) {
-        toastMessage("Adding Data ...");
+        CommonMethods.toastMessage(AddInfoActivity.this, "Adding Data ...");
         String id = user.getUid();
         try {
 
@@ -167,14 +167,14 @@ public class AddInfoActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (!task.isSuccessful()) {
-                                    toastMessage("Password change failed");
+                                    CommonMethods.toastMessage(AddInfoActivity.this, "Password change failed");
                                     authorized = false;
                                 }
                             }
                         });
 
                     } else {
-                        toastMessage("Re auth Error");
+                        CommonMethods.toastMessage(AddInfoActivity.this, "Re auth Error");
                         authorized = false;
                     }
                 }
@@ -183,18 +183,11 @@ public class AddInfoActivity extends AppCompatActivity {
             temp.child("password").setValue(pass1);
 
         } catch (DatabaseException e) {
-            toastMessage("Database Error");
+            CommonMethods.toastMessage(AddInfoActivity.this, "Database Error");
             authorized = false;
         }
 
 
     }
 
-    /**
-     * Displays a Toast Message
-     * @param message Toast message to be displayed
-     */
-    private void toastMessage(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-    }
 }

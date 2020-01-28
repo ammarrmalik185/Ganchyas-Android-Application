@@ -19,7 +19,7 @@ import com.google.firebase.database.ValueEventListener;
 import app.ganchyas.NonActivityClasses.CommonMethods;
 
 /**
- * Backend of UI (activity_edit_info.xml). Allows the user to edit their information.
+ * Gets the data from the user and edits the database. Allows the user to edit their information.
  * @author Paradox
  */
 
@@ -109,14 +109,6 @@ public class EditInfoActivity extends AppCompatActivity {
         if (!date.equals("")) temp.child("birth date").setValue(date);
         if (!section.equals("")) temp.child("section").setValue(section);
 
-        toastMessage("Information Updated");
-    }
-
-    /**
-     * Displays a Toast Message
-     * @param message Toast message to be displayed
-     */
-    private void toastMessage(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        CommonMethods.toastMessage(EditInfoActivity.this, "Information Updated");
     }
 }

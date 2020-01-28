@@ -26,7 +26,7 @@ import app.ganchyas.NonActivityClasses.ForumPack;
 import app.ganchyas.NonActivityClasses.ForumTypeChooser;
 
 /**
- * A Fragment that displays a list of forums.
+ * Displays a list of forums.
  * @author Paradox
  */
 
@@ -70,7 +70,7 @@ public class ForumFragment extends Fragment {
     }
 
     /**
-     * Initiated then the activity is created
+     * Called when the activity is created
      * @param savedInstanceState Contains the saved Instance of the Activity
      */
     @Override

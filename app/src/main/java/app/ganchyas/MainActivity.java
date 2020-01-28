@@ -2,6 +2,7 @@ package app.ganchyas;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -31,20 +32,42 @@ import app.ganchyas.NonActivityClasses.CommonMethods;
 import app.ganchyas.NonActivityClasses.NavViewPagerAdapter;
 
 /**
- * @author Paradox;
+ * Container that can cycle through the fragments. Contains the bottom navigation bar as well as a navigation drawer.
+ * called "MainActivity" because all other application functions can be accessed through it
+ * @author Paradox
  */
 
 public class MainActivity extends AppCompatActivity {
 
+    boolean doubleBackToExitPressedOnce = false;
+    /**
+     * Controls the fragments to be displayed
+     */
     ViewPager viewPager;
+    /**
+     * Reference to the bottom navigation to switch between the fragments
+     */
     BottomNavigationView bottomNavigationView;
-    TextView nameView, emailView;
+    /**
+     * Reference to the textView that shows the user's name on the drawer
+     */
+    TextView nameView;
+    /**
+     * Reference to the textView that shows the user's email on the drawer
+     */
+    TextView emailView;
+    /**
+     * Reference to the imageView that shows the user's profile picture on the drawer
+     */
     ImageView profilePic;
-
+    /**
+     * Reference to the drawer on the main activity
+     */
     private DrawerLayout drawerLayout;
-    private BottomNavigationView.OnNavigationItemSelectedListener navListener =
-            new BottomNavigationView.OnNavigationItemSelectedListener() {
-
+    /**
+     * Listener for the bottom navigation to cycle through the fragments
+     */
+    private BottomNavigationView.OnNavigationItemSelectedListener navListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                     switch (menuItem.getItemId()) {
@@ -61,10 +84,11 @@ public class MainActivity extends AppCompatActivity {
                             viewPager.setCurrentItem(3);
                             break;
                     }
-                    return true;
-                }
-            };
+                    return true; }};
 
+    /**
+     * View pager listener to cycle through fragments when the user swipes
+     */
     private ViewPager.OnPageChangeListener page_listener = new ViewPager.OnPageChangeListener() {
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -89,6 +113,10 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    /**
+     * Inflates the UI using activity_main.xml.
+     * @param savedInstanceState Previous instance of the UI.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -159,7 +187,6 @@ public class MainActivity extends AppCompatActivity {
                         Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
                         startActivity(intent);
                         break;
-
                     case R.id.settings:
                         Intent intent3 = new Intent(MainActivity.this, SettingsActivity.class);
                         startActivity(intent3);
@@ -169,6 +196,10 @@ public class MainActivity extends AppCompatActivity {
                         Intent intent2 = new Intent(MainActivity.this, LoginActivity.class);
                         startActivity(intent2);
                         break;
+                    case R.id.patches:
+                        Intent intent4 = new Intent(MainActivity.this, PatchesActivity.class);
+                        startActivity(intent4);
+                        break;
                 }
                 return true;
             }
@@ -176,11 +207,27 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Overwriting on back pressed to include drawer and double back press to exit
+     */
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            if (doubleBackToExitPressedOnce) {
+                android.os.Process.killProcess(android.os.Process.myPid());
+                return;
+            }
+            this.doubleBackToExitPressedOnce = true;
+            CommonMethods.toastMessage(MainActivity.this, "Press back again to exit");
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    doubleBackToExitPressedOnce=false;
+                }
+            }, 2000);
         }
-    }
+        }
 
 }
 

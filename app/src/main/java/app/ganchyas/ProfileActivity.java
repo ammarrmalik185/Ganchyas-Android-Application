@@ -39,20 +39,65 @@ import com.squareup.picasso.Picasso;
 import app.ganchyas.NonActivityClasses.CommonMethods;
 
 /**
- * @author Paradox;
+ * Shows the user their profile and allows them to edit it
+ * @author Paradox
  */
 
 public class ProfileActivity extends AppCompatActivity {
 
-    DatabaseReference myDb;
+    /**
+     * Stores the reference of the root node of the Database
+     */
+    DatabaseReference completeDatabaseReference;
+    /**
+     * Dialog that pops up when a file is being uploaded
+     */
     ProgressDialog dialog;
+    /**
+     * Contains the currently logged in user
+     */
     FirebaseUser user;
-    StorageReference mStorageRef;
-    Uri imageUri;
-    TextView nameField, phoneField, dateField, sectionField, emailField;
+    /**
+     * Contains the reference of the root directory of the cloud storage
+     */
+    StorageReference completeStorageReference;
+    /**
+     * The Uri of the user's current profile picture
+     */
+    Uri profilePictureUri;
+    /**
+     * Reference to the Text view that views the name of the user
+     */
+    TextView nameField;
+    /**
+     * Reference to the Text view that views the phone number of the user
+     */
+    TextView phoneField;
+    /**
+     * Reference to the Text view that views the date of birth of the user
+     */
+    TextView dateField;
+    /**
+     * Reference to the Text view that views the section of the user
+     */
+    TextView sectionField;
+    /**
+     * Reference to the Text view that views the email of the user
+     */
+    TextView emailField;
+    /**
+     * This dialog show the user what his new profile picture will look like after cropping it
+     */
     Dialog previewDialog;
+    /**
+     * Reference to the Image view that views the profile picture of the user
+     */
     ImageView profilePic;
 
+    /**
+     * Overriding onCreate to Inflate custom UI using activity_profile.xml
+     * @param savedInstanceState contains the old state of this UI
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(CommonMethods.getPersonalTheme(getFilesDir()));
@@ -61,7 +106,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         profilePic = findViewById(R.id.ProfileActivityPic);
         previewDialog = new Dialog(ProfileActivity.this);
-        mStorageRef = FirebaseStorage.getInstance().getReference();
+        completeStorageReference = FirebaseStorage.getInstance().getReference();
         dialog = new ProgressDialog(ProfileActivity.this);
         nameField = findViewById(R.id.nameField);
         phoneField = findViewById(R.id.phoneField);
@@ -73,8 +118,8 @@ public class ProfileActivity extends AppCompatActivity {
         previewDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         emailField.setText(user.getEmail());
 
-        myDb = FirebaseDatabase.getInstance().getReference();
-        myDb.child("userdata").child(user.getUid()).
+        completeDatabaseReference = FirebaseDatabase.getInstance().getReference();
+        completeDatabaseReference.child("userdata").child(user.getUid()).
                 addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -95,36 +140,56 @@ public class ProfileActivity extends AppCompatActivity {
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
-                        toastMessage("Unable to retrieve data");
+                        CommonMethods.toastMessage(ProfileActivity.this, "Unable to retrieve data");
                     }
                 });
 
     }
 
-    private void toastMessage(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-    }
-
+    /**
+     * Invoked when the edit profile button is clicked. Takes the user to the EditProfileActivity.java page
+     * @param view Contains the button that was pressed
+     */
     public void editProfileAction(View view) {
         Intent intent = new Intent(ProfileActivity.this, EditInfoActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * Invoked when the change password button is clicked. Takes the user to the PasswordChangeActivity.java page
+     * @param view Contains the button that was pressed
+     */
     public void changePasswordAction(View view) {
         Intent intent = new Intent(ProfileActivity.this, PasswordChangeActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * Invoked when the change profile picture button is clicked. Takes the user to an image chooser to pick the new profile picture
+     * @param view Contains the button that was pressed
+     */
+    public void changeProfilePicture(View view){
+        checkFilePermissions();
+        Intent fileIntent = new Intent(Intent.ACTION_GET_CONTENT);
+        fileIntent.setType("image/*");
+        startActivityForResult(fileIntent, 1);
+    }
+
+    /**
+     * Invoked when the user has chosen an image as his new profile picture
+     * @param requestCode The unique identifier of the image choose request
+     * @param resultCode Contains the status of the request (completed successfully or not)
+     * @param data The data that the request has returned
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
-
         if (requestCode == 1) {
             if (resultCode == RESULT_OK && data!=null && data.getData() != null) {
-                imageUri = data.getData();
+                profilePictureUri = data.getData();
                 previewDialog.setContentView(R.layout.dialog_profile_pic);
                 ImageView profilePicPreview = previewDialog.findViewById(R.id.profilePicPreview);
-                Picasso.with(ProfileActivity.this).load(imageUri).resize(500,500).centerCrop().into(profilePicPreview);
+                Picasso.with(ProfileActivity.this).load(profilePictureUri).resize(500,500).centerCrop().into(profilePicPreview);
                 Button confrmButon = previewDialog.findViewById(R.id.confirmButton);
                 confrmButon.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -143,13 +208,9 @@ public class ProfileActivity extends AppCompatActivity {
 
     }
 
-    public void changeProfilePicture(View view){
-        checkFilePermissions();
-        Intent fileIntent = new Intent(Intent.ACTION_GET_CONTENT);
-        fileIntent.setType("image/*");
-        startActivityForResult(fileIntent, 1);
-    }
-
+    /**
+     * A function that checks if the application has file reading permissions (if it does'nt it requests fot the permission)
+     */
     private void checkFilePermissions() {
 
         int permissionCheck = 0;
@@ -167,16 +228,24 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Can get the file extension from a given Uri
+     * @param uri The Uri of the file
+     * @return The extension of the file given via Uri
+     */
     private String getFileExtension(Uri uri) {
         ContentResolver cR = getContentResolver();
         MimeTypeMap mime = MimeTypeMap.getSingleton();
         return mime.getExtensionFromMimeType(cR.getType(uri));
     }
 
+    /**
+     * Uploads the new profile picture to the storage and and updates the database
+     */
     public void uploadFile() {
 
-        final StorageReference imageRef = mStorageRef.child("user profile images/" + user.getUid() + "." + getFileExtension(imageUri));
-        imageRef.putFile(imageUri).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+        final StorageReference imageRef = completeStorageReference.child("user profile images/" + user.getUid() + "." + getFileExtension(profilePictureUri));
+        imageRef.putFile(profilePictureUri).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
             @Override
             public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) {
                 if (!task.isSuccessful()) {
@@ -190,7 +259,7 @@ public class ProfileActivity extends AppCompatActivity {
         }).addOnCompleteListener(new OnCompleteListener<Uri>() {
                  @Override
                  public void onComplete(@NonNull Task<Uri> task) {
-                     myDb.child("userdata").child(user.getUid()).child("profile picture").setValue(task.getResult().toString());
+                     completeDatabaseReference.child("userdata").child(user.getUid()).child("profile picture").setValue(task.getResult().toString());
                      dialog.dismiss();
                  }
             }

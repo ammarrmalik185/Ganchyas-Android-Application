@@ -26,22 +26,51 @@ import app.ganchyas.NonActivityClasses.Notification;
 import app.ganchyas.NonActivityClasses.NotificationsAdapter;
 
 /**
- * @author Paradox;
+ * Shows the notifications received by the user
+ * @author Paradox
  */
 
 public class NotificationsFragment extends Fragment {
 
+    /**
+     * An adapter that dynamically generates the UI of the list
+     */
     private ArrayAdapter notificationsAdapter;
+    /**
+     * Contains the inflated layout of the fragment
+     */
     public View view;
-    private DataSnapshot dsSnap;
-    private DatabaseReference myDb;
+    /**
+     * Snapshot shot of the entire database
+     */
+    private DataSnapshot completeDatabaseSnapshot;
+    /**
+     * Stores the reference of the root node of the Database
+     */
+    private DatabaseReference completeDatabaseReference;
+    /**
+     * An array of all the  notifications
+     */
     private ArrayList<Notification> notificationArray;
+    /**
+     * Listener for the entire database
+     */
     private ValueEventListener listener;
 
+    /**
+     * Empty Constructor
+     */
     public NotificationsFragment() {
         // Required empty public constructor
     }
 
+    /**
+     * Generates the UI of the Fragment
+     * @param inflater An Inflater object to inflate the layout
+     * @param container A parent view where the UI will be placed
+     * @param savedInstanceState An older instance of the fragment (if any)
+     * @return The inflated UI of the Fragment Instance
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -49,7 +78,7 @@ public class NotificationsFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_notifications, container, false);
         notificationArray = new ArrayList<>();
-        myDb = FirebaseDatabase.getInstance().getReference();
+        completeDatabaseReference = FirebaseDatabase.getInstance().getReference();
         SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.swipeToRefreshNotifications);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -66,7 +95,7 @@ public class NotificationsFragment extends Fragment {
             @Override
             public View onCallBack() {
 
-                DataSnapshot notificationData = dsSnap.child("notificationData").child(FirebaseAuth
+                DataSnapshot notificationData = completeDatabaseSnapshot.child("notificationData").child(FirebaseAuth
                 .getInstance().getCurrentUser().getUid());
 
                 for (DataSnapshot singleForum : notificationData.getChildren()) {
@@ -77,18 +106,23 @@ public class NotificationsFragment extends Fragment {
                 notificationsAdapter = new NotificationsAdapter(getContext(), notificationArray);
                 ListView listView = view.findViewById(R.id.notification_list);
                 listView.setAdapter(notificationsAdapter);
-                myDb.removeEventListener(listener);
+                completeDatabaseReference.removeEventListener(listener);
                 return view;
             }
         });
     }
 
+    /**
+     * A helping function to read the data of the database
+     * @param firebaseCallback A child of FirebaseCallBack that has implemented the onCallBack() method.
+     * @return An inflated view.
+     */
     private View readData(final FirebaseCallback firebaseCallback) {
 
         listener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                dsSnap = dataSnapshot;
+                completeDatabaseSnapshot = dataSnapshot;
                 view = firebaseCallback.onCallBack();
             }
 
@@ -98,7 +132,7 @@ public class NotificationsFragment extends Fragment {
             }
         };
 
-        myDb.addValueEventListener(listener);
+        completeDatabaseReference.addValueEventListener(listener);
 
         return view;
     }

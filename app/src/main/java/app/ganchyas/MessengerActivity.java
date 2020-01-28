@@ -29,22 +29,57 @@ import app.ganchyas.NonActivityClasses.MessagePack;
 import app.ganchyas.NonActivityClasses.MessageViewAdapter;
 
 /**
- * @author Paradox;
+ * Messenger that the users interact with to send and view messages
+ * @author Paradox
  */
 
 public class MessengerActivity extends AppCompatActivity {
 
+    /**
+     * The id of the user that the current user is conversing with
+     */
     String userId;
+    /**
+     * The Uid assigned to the current conversation
+     */
     String conversationId;
+    /**
+     * Stores whether or not the conversation is in the database or not
+     */
     boolean isInitialized;
-    DatabaseReference myDb;
+    /**
+     * Stores the reference of the root node of the Database
+     */
+    DatabaseReference completeDatabaseReference;
+    /**
+     * Database reference of the current conversation
+     */
     DatabaseReference conversationRef;
+    /**
+     * Contains the reference of the Text Field on the xml that shows the Name of the user
+     */
     TextView nameView;
+    /**
+     * Contains the reference of the ImageView on the xml that shows the Profile picture of the user
+     */
     ImageView profilePicture;
+    /**
+     * A value event listener that gets the information of the user
+     */
     ValueEventListener userListener;
+    /**
+     * The main list of messages the the user sees
+     */
     ListView conversationDisplay;
+    /**
+     * Field that the user type the message into
+     */
     EditText messageView;
 
+    /**
+     * Overriding onCreate to Inflate custom UI using activity_messenger.xml
+     * @param savedInstanceState contains the old state of this UI
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -61,7 +96,7 @@ public class MessengerActivity extends AppCompatActivity {
         conversationId = getIntent().getExtras().get("conversationId").toString();
         isInitialized = !(boolean) getIntent().getExtras().get("newConversation");
 
-        myDb = FirebaseDatabase.getInstance().getReference();
+        completeDatabaseReference = FirebaseDatabase.getInstance().getReference();
         userListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -80,7 +115,7 @@ public class MessengerActivity extends AppCompatActivity {
                             .placeholder(R.mipmap.ic_launcher_round)
                             .into(profilePicture);
 
-                myDb.removeEventListener(userListener);
+                completeDatabaseReference.removeEventListener(userListener);
 
             }
 
@@ -90,11 +125,11 @@ public class MessengerActivity extends AppCompatActivity {
             }
         };
 
-        myDb.addValueEventListener(userListener);
+        completeDatabaseReference.addValueEventListener(userListener);
 
         initializeConversation();
 
-        conversationRef = myDb.child("messageData").child(conversationId);
+        conversationRef = completeDatabaseReference.child("messageData").child(conversationId);
 
         conversationRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -120,6 +155,9 @@ public class MessengerActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Adds the data of the conversation to the database (if this is a new conversation)
+     */
     public void initializeConversation(){
 
         if (!isInitialized)
@@ -129,7 +167,7 @@ public class MessengerActivity extends AppCompatActivity {
             long format = Long.parseLong(s.format(new Date()));
             conversationId = "conversation_id_" + (50000000000000L - format);
 
-            DatabaseReference newConversation = myDb.child("messageData").child(conversationId);
+            DatabaseReference newConversation = completeDatabaseReference.child("messageData").child(conversationId);
             HashMap<String, String> data = new HashMap<>();
             data.put("user1",FirebaseAuth.getInstance().getCurrentUser().getUid());
             data.put("user2", userId);
@@ -139,30 +177,31 @@ public class MessengerActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Sends the entered message to the user
+     * @param view Contains the submit button
+     */
     public void sendButtonPressed(View view){
 
         String messageText = messageView.getText().toString();
-        if(!messageText.equals("")) {
-            HashMap<String, String> messageData = new HashMap<>();
+        HashMap<String, String> messageData = new HashMap<>();
 
+        SimpleDateFormat s = new SimpleDateFormat("yyyyMMddHHmmss");
+        Long format = Long.parseLong(s.format(new Date()));
 
-            SimpleDateFormat s = new SimpleDateFormat("yyyyMMddHHmmss");
-            Long format = Long.parseLong(s.format(new Date()));
+        s = new SimpleDateFormat("dd/MM/yyyy");
+        String date = s.format(new Date());
+        s = new SimpleDateFormat("HH:mm");
+        String time = s.format(new Date());
 
-            s = new SimpleDateFormat("dd/MM/yyyy");
-            String date = s.format(new Date());
-            s = new SimpleDateFormat("HH:mm");
-            String time = s.format(new Date());
+        String identifier = "message_id_" + (format);
 
-            String identifier = "message_id_" + (format);
+        messageData.put("messageText", messageText);
+        messageData.put("time", time);
+        messageData.put("date", date);
+        messageData.put("sender", FirebaseAuth.getInstance().getCurrentUser().getUid());
 
-            messageData.put("messageText", messageText);
-            messageData.put("time", time);
-            messageData.put("date", date);
-            messageData.put("sender", FirebaseAuth.getInstance().getCurrentUser().getUid());
-
-            conversationRef.child("messages").child(identifier).setValue(messageData);
-            messageView.setText("");
-        }
+        conversationRef.child("messages").child(identifier).setValue(messageData);
+        messageView.setText("");
     }
 }

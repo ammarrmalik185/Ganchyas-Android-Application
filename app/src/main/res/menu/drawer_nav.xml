@@ -13,9 +13,13 @@
         android:title="Settings" />
 
     <item
+        android:id="@+id/patches"
+        android:icon="@drawable/drawer_patch_icon_24dp"
+        android:title="Patches" />
+
+    <item
         android:id="@+id/logout"
         android:icon="@drawable/drawer_logout_icon_24dp"
         android:title="Logout" />
-
 
 </menu>

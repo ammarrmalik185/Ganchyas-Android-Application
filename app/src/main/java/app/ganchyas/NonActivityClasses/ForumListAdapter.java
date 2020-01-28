@@ -29,6 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import app.ganchyas.ForumDisplayActivity;
@@ -158,7 +159,6 @@ public class ForumListAdapter extends ArrayAdapter<ForumPack> {
 
     private void commentButtonPressed(final int position) {
         final DatabaseReference myDb = FirebaseDatabase.getInstance().getReference();
-        ForumPack currentForum = getItem(position);
         mDialog.setContentView(R.layout.dialog_comments);
         mDialog.show();
         listner = new ValueEventListener() {
@@ -167,8 +167,8 @@ public class ForumListAdapter extends ArrayAdapter<ForumPack> {
                 ForumPack fp = getItem(position);
                 fp.refreshComments(dataSnapshot);
                 ArrayList<CommentPack> commentPacks = fp.getCommentPacks();
-
                 ListView listUsers = mDialog.findViewById(R.id.listUsers);
+                Collections.reverse(commentPacks);
                 adapter = new CommentsAdapter(getContext(), commentPacks);
                 listUsers.setAdapter(adapter);
                 TextView header = mDialog.findViewById(R.id.header);

@@ -31,25 +31,58 @@ import java.util.Scanner;
 import app.ganchyas.NonActivityClasses.CommonMethods;
 
 /**
- * @author Paradox;
+ * Login page to authenticate with firebase authentication. Skipped if already logged in.
+ * @author Paradox
  */
 
 public class LoginActivity extends AppCompatActivity {
 
-    private FirebaseAuth mAuth;
-    private DatabaseReference myDb;
+    /**
+     * Stores the firebase authentication instance
+     */
+    private FirebaseAuth firebaseAuth;
+    /**
+     * Stores the reference of the root node of the Database
+     */
+    private DatabaseReference completeDatabaseReference;
+    /**
+     * A dialog that appears when login button is clicked.
+     */
     private ProgressDialog dialog;
+    /**
+     * Contains the password entered by the user
+     */
     private String pass;
-    private EditText mEmail, mPassword;
+    /**
+     * Reference to the edit text field in the UI that the user enters email into
+     */
+    private EditText emailEditText;
+    /**
+     * Reference to the edit text field in the UI that the user enters password into
+     */
+    private EditText passwordEditText;
+    /**
+     * A reference to the check box on the UI that if clicked saves the login info to a secure local file
+     */
     private CheckBox rememberBox;
+    /**
+     * Contains the email that the user has entered
+     */
     private String email;
+    /**
+     * A value event listener for the database reference
+     */
     private ValueEventListener listener;
 
+    /**
+     * Inflates the UI using activity_login.xml.
+     * @param savedInstanceState Previous instance of the UI.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        mAuth = FirebaseAuth.getInstance();
-        if  (mAuth.getCurrentUser() != null)
+        firebaseAuth = FirebaseAuth.getInstance();
+        if  (firebaseAuth.getCurrentUser() != null)
         {
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
@@ -63,10 +96,10 @@ public class LoginActivity extends AppCompatActivity {
         dialog = new ProgressDialog(LoginActivity.this);
         dialog.setMessage("Logging in ... please wait");
 
-        mAuth = FirebaseAuth.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
 
-        mEmail = findViewById(R.id.emailField);
-        mPassword = findViewById(R.id.passwordField);
+        emailEditText = findViewById(R.id.emailField);
+        passwordEditText = findViewById(R.id.passwordField);
         rememberBox = findViewById(R.id.rememberCheck);
 
         File file2 = new File(getFilesDir().getAbsolutePath() + "/login data.txt");
@@ -74,9 +107,9 @@ public class LoginActivity extends AppCompatActivity {
             if (file2.exists()) {
                 Scanner fileReader = new Scanner(file2);
                 String savedEmail = fileReader.nextLine();
-                mEmail.setText(savedEmail);
+                emailEditText.setText(savedEmail);
                 String savedPassword = fileReader.nextLine();
-                mPassword.setText(savedPassword);
+                passwordEditText.setText(savedPassword);
                 rememberBox.setChecked(true);
             } else {
                 rememberBox.setChecked(false);
@@ -86,34 +119,25 @@ public class LoginActivity extends AppCompatActivity {
         }
 
 
-        myDb = FirebaseDatabase.getInstance().getReference();
+        completeDatabaseReference = FirebaseDatabase.getInstance().getReference();
 
 
     }
 
-    private void toastMessage(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-    }
-
+    /**
+     * Overwritten to make sure that after login the user cannot go the MainActivity.java
+     */
     public void onBackPressed() {
-
     }
 
+    /**
+     * Invoked when the login button is pressed
+     * @param view The button object that was pressed
+     */
     public void submitButtonAction(View view) {
         dialog.show();
-        email = mEmail.getText().toString();
-        pass = mPassword.getText().toString();
-
+        email = emailEditText.getText().toString();
+        pass = passwordEditText.getText().toString();
 
         listener = new ValueEventListener() {
             @Override
@@ -125,73 +149,71 @@ public class LoginActivity extends AppCompatActivity {
                         try {
                             file.createNewFile();
                         } catch (IOException e) {
-                            toastMessage("Error creating file to remember password");
+                            CommonMethods.toastMessage(LoginActivity.this, "Error creating file to remember password");
                         }
                     }
                     try {
                         FileWriter fileWriter = new FileWriter(file);
-                        fileWriter.write(mAuth.getCurrentUser().getEmail() + "\n" + pass);
+                        fileWriter.write(firebaseAuth.getCurrentUser().getEmail() + "\n" + pass);
                         fileWriter.close();
                     } catch (IOException e) {
-                        toastMessage("Unable to save login info to file");
+                        CommonMethods.toastMessage(LoginActivity.this, "Unable to save login info to file");
                     }
                 }
 
-                FirebaseUser user = mAuth.getCurrentUser();
+                FirebaseUser user = firebaseAuth.getCurrentUser();
 
                 if (!dataSnapshot.child("userdata").child(user.getUid()).exists()) {
                     Intent intent = new Intent(LoginActivity.this, AddInfoActivity.class);
                     intent.putExtra("pass", pass);
                     intent.putExtra("id", email);
-                    toastMessage("Welcome new user with email: " + user.getEmail());
+                    
+                    CommonMethods.toastMessage(LoginActivity.this, "Welcome new user with email: " + user.getEmail());
                     dialog.dismiss();
                     startActivity(intent);
                 } else {
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    toastMessage("logged in as " + user.getEmail());
+                    CommonMethods.toastMessage(LoginActivity.this, "logged in as " + user.getEmail());
                     dialog.dismiss();
                     startActivity(intent);
                 }
 
-                myDb.removeEventListener(listener);
+                completeDatabaseReference.removeEventListener(listener);
 
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                toastMessage("Database access denied (could be an internet issue)");
+                CommonMethods.toastMessage(LoginActivity.this, "Database access denied (could be an internet issue)");
 
             }
         };
 
-
         if (!email.equals("") && !pass.equals("")) {
-            mAuth.signInWithEmailAndPassword(email, pass)
+            firebaseAuth.signInWithEmailAndPassword(email, pass)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                myDb.addValueEventListener(listener);
+                                completeDatabaseReference.addValueEventListener(listener);
                             } else {
                                 Exception e = task.getException();
                                 String exception = e.getMessage();
 
                                 dialog.dismiss();
                                 if (exception.equals("An internal error has occurred. [ 7: ]"))
-                                    toastMessage("Internet Problem");
+                                    CommonMethods.toastMessage(LoginActivity.this, "Internet Problem");
                                 else if (exception.equals("The password is invalid or the user does not have a password."))
-                                    toastMessage("Email or Password Incorrect");
+                                    CommonMethods.toastMessage(LoginActivity.this, "Email or Password Incorrect");
                                 else
-                                    toastMessage("Unexpected Error");
+                                    CommonMethods.toastMessage(LoginActivity.this, "Unexpected Error");
 
                             }
                         }
                     });
         } else {
-            toastMessage("You didn't fill in all the fields.");
+            CommonMethods.toastMessage(LoginActivity.this, "You didn't fill in all the fields.");
         }
 
     }
-
-
 }

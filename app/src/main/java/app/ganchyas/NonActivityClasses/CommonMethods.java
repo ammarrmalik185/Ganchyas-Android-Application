@@ -1,5 +1,8 @@
 package app.ganchyas.NonActivityClasses;
 
+import android.content.Context;
+import android.widget.Toast;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
@@ -28,6 +31,15 @@ public class CommonMethods {
                 return R.style.DarkTheme;
             }
         } else return R.style.DarkTheme;
+    }
+
+    /**
+     * Displays a Toast Message
+     * @param context Context of the activity
+     * @param message Toast message to be displayed
+     */
+    public static void toastMessage(Context context, String message){
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
 
 }
