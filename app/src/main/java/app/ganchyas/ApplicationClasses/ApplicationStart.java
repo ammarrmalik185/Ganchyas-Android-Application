@@ -29,6 +29,11 @@ public class ApplicationStart extends Application {
      *  Notification channel 4 id (for message notifications)
      */
     public static final String CHANNEL_4_ID = "messageChannel";
+    /**
+     *  Notification channel 5 id (for application updates)
+     */
+    public static final String CHANNEL_5_ID = "updateChannel";
+
 
     /**
      * Empty constructor
@@ -84,6 +89,15 @@ public class ApplicationStart extends Application {
             );
             channel4.setDescription("Notifications for new messages");
 
+            // defining new Version channel
+            NotificationChannel channel5 = new NotificationChannel(
+                    CHANNEL_5_ID,
+                    "Version Updates",
+                    NotificationManager.IMPORTANCE_HIGH
+            );
+            channel4.setDescription("Notifications for new app version releases");
+
+
             // creating channels
             NotificationManager manager = getSystemService(NotificationManager.class);
             assert manager != null;
@@ -91,6 +105,7 @@ public class ApplicationStart extends Application {
             manager.createNotificationChannel(channel2);
             manager.createNotificationChannel(channel3);
             manager.createNotificationChannel(channel4);
+            manager.createNotificationChannel(channel5);
 
         }
     }

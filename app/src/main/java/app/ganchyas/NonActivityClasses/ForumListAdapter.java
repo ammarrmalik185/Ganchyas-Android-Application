@@ -15,7 +15,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
@@ -36,21 +35,44 @@ import app.ganchyas.ForumDisplayActivity;
 import app.ganchyas.R;
 
 /**
- * @author Paradox;
+ * Generates UI of a list of forums dynamically
+ * @author Paradox
  */
-
 public class ForumListAdapter extends ArrayAdapter<ForumPack> {
 
-    private Dialog mDialog;
-    private ValueEventListener listner;
-    private CommentsAdapter adapter;
-    private View.OnClickListener listener3;
-    private VideoView videoView;
+    /**
+     * A dialog used to show likes, dislikes, comments and user info
+     */
+    private Dialog dialog;
+    /**
+     * A value listener  for the database
+     */
+    private ValueEventListener listener;
+    /**
+     * Dynamically generates the UI of comments
+     */
+    private CommentsAdapter commentsAdapter;
+    /**
+     * On click listener for the forum to open it in ForumDisplayActivity
+     */
+    private View.OnClickListener goToDedicatedViewListner;
 
+    /**
+     * Calls the super constructor with design_forum_text.xml as resource id
+     * @param context The instance of the activity running
+     * @param objects A list of Forums that need to be displayed
+     */
     public ForumListAdapter(@NonNull Context context, @NonNull List<ForumPack> objects) {
         super(context, R.layout.design_forum_text, objects);
     }
 
+    /**
+     * Inflates the UI of a single list entity
+     * @param position The position of the entity in the list to be inflated
+     * @param convertView Inflated view of the previous list entity (if any)
+     * @param parent The parent View that the view needs to be inflated into
+     * @return The inflated UI of the list entity at the position given
+     */
     @NonNull
     @Override
     public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -67,10 +89,17 @@ public class ForumListAdapter extends ArrayAdapter<ForumPack> {
 
     }
 
+    /**
+     * Updates the list with the new entries
+     */
     private void update() {
         this.notifyDataSetChanged();
     }
 
+    /**
+     * Called when the like button is pressed on a forum
+     * @param position Position of the forum in the array that was liked
+     */
     private void likeButtonPressed(int position) {
         ForumPack currentForum = getItem(position);
         assert currentForum != null;
@@ -78,6 +107,10 @@ public class ForumListAdapter extends ArrayAdapter<ForumPack> {
         update();
     }
 
+    /**
+     * Called when the dislike button is pressed on a forum
+     * @param position Position of the forum in the array that was disliked
+     */
     private void disLikeButtonPressed(int position) {
         ForumPack currentForum = getItem(position);
         assert currentForum != null;
@@ -86,12 +119,16 @@ public class ForumListAdapter extends ArrayAdapter<ForumPack> {
 
     }
 
+    /**
+     * Shows a list of likes for the forum
+     * @param position Position of the forum in the array that needs to display its likes
+     */
     private void viewLikersAction(int position) {
         final DatabaseReference myDb = FirebaseDatabase.getInstance().getReference();
         ForumPack currentForum = getItem(position);
         assert currentForum != null;
         final String forumId = currentForum.getForumId();
-        listner = new ValueEventListener() {
+        listener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 ArrayList<String> likersArray = new ArrayList<>();
@@ -104,14 +141,14 @@ public class ForumListAdapter extends ArrayAdapter<ForumPack> {
                         likersArray.add(users.child(likerSnap.getKey()).child("name").getValue().toString());
                     }
                 }
-                myDb.removeEventListener(listner);
-                mDialog.setContentView(R.layout.dialog_title_and_list);
-                ListView listUsers = mDialog.findViewById(R.id.listUsers);
+                myDb.removeEventListener(listener);
+                dialog.setContentView(R.layout.dialog_title_and_list);
+                ListView listUsers = dialog.findViewById(R.id.listUsers);
                 listUsers.setAdapter(new LikersDislikersAdapter(getContext(), likersArray));
-                TextView header = mDialog.findViewById(R.id.header);
+                TextView header = dialog.findViewById(R.id.header);
                 header.setText("Likes");
 
-                mDialog.show();
+                dialog.show();
             }
 
             @Override
@@ -119,15 +156,19 @@ public class ForumListAdapter extends ArrayAdapter<ForumPack> {
 
             }
         };
-        myDb.addValueEventListener(listner);
+        myDb.addValueEventListener(listener);
     }
 
+    /**
+     * Shows a list of dislikes for the forum
+     * @param position Position of the forum in the array that needs to display its dislikes
+     */
     private void viewDislikersAction(int position) {
         final DatabaseReference myDb = FirebaseDatabase.getInstance().getReference();
         ForumPack currentForum = getItem(position);
         assert currentForum != null;
         final String forumId = currentForum.getForumId();
-        listner = new ValueEventListener() {
+        listener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 ArrayList<String> dislikersArray = new ArrayList<>();
@@ -140,13 +181,13 @@ public class ForumListAdapter extends ArrayAdapter<ForumPack> {
                         dislikersArray.add(users.child(dislikerSnap.getKey()).child("name").getValue().toString());
                     }
                 }
-                myDb.removeEventListener(listner);
-                mDialog.setContentView(R.layout.dialog_title_and_list);
-                ListView listUsers = mDialog.findViewById(R.id.listUsers);
+                myDb.removeEventListener(listener);
+                dialog.setContentView(R.layout.dialog_title_and_list);
+                ListView listUsers = dialog.findViewById(R.id.listUsers);
                 listUsers.setAdapter(new LikersDislikersAdapter(getContext(), dislikersArray));
-                TextView header = mDialog.findViewById(R.id.header);
+                TextView header = dialog.findViewById(R.id.header);
                 header.setText("Dislikes");
-                mDialog.show();
+                dialog.show();
             }
 
             @Override
@@ -154,26 +195,30 @@ public class ForumListAdapter extends ArrayAdapter<ForumPack> {
 
             }
         };
-        myDb.addValueEventListener(listner);
+        myDb.addValueEventListener(listener);
     }
 
+    /**
+     * Opens the comment dialog that allows the user to post a comment
+     * @param position Position of the forum in the array
+     */
     private void commentButtonPressed(final int position) {
         final DatabaseReference myDb = FirebaseDatabase.getInstance().getReference();
-        mDialog.setContentView(R.layout.dialog_comments);
-        mDialog.show();
-        listner = new ValueEventListener() {
+        dialog.setContentView(R.layout.dialog_comments);
+        dialog.show();
+        listener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 ForumPack fp = getItem(position);
                 fp.refreshComments(dataSnapshot);
                 ArrayList<CommentPack> commentPacks = fp.getCommentPacks();
-                ListView listUsers = mDialog.findViewById(R.id.listUsers);
+                ListView listUsers = dialog.findViewById(R.id.listUsers);
                 Collections.reverse(commentPacks);
-                adapter = new CommentsAdapter(getContext(), commentPacks);
-                listUsers.setAdapter(adapter);
-                TextView header = mDialog.findViewById(R.id.header);
-                Button submitButton = mDialog.findViewById(R.id.submitButton);
-                final EditText commentField = mDialog.findViewById(R.id.commentField);
+                commentsAdapter = new CommentsAdapter(getContext(), commentPacks);
+                listUsers.setAdapter(commentsAdapter);
+                TextView header = dialog.findViewById(R.id.header);
+                Button submitButton = dialog.findViewById(R.id.submitButton);
+                final EditText commentField = dialog.findViewById(R.id.commentField);
 
                 listUsers.setSelection(listUsers.getCount()-1);
 
@@ -183,10 +228,10 @@ public class ForumListAdapter extends ArrayAdapter<ForumPack> {
                         String comment = commentField.getText().toString();
                         if (!comment.equals("")) {
                             pushComment(comment, position);
-                            toastMessage("Posted Successfully");
+                            CommonMethods.toastMessage(getContext(), "Posted Successfully");
                             commentButtonPressed(position);
                         } else {
-                            toastMessage("please enter a comment");
+                            CommonMethods.toastMessage(getContext(), "please enter a comment");
                         }
                     }
                 });
@@ -198,19 +243,27 @@ public class ForumListAdapter extends ArrayAdapter<ForumPack> {
 
             }
         };
-        myDb.addValueEventListener(listner);
+        myDb.addValueEventListener(listener);
 
     }
 
-    private void toastMessage(String message) {
-        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
-    }
-
+    /**
+     * Adds comment in the database
+     * @param comment The text of the comment
+     * @param position The position of the forum that the comment needs to be added to
+     */
     private void pushComment(String comment, int position) {
         ForumPack forumPack = getItem(position);
-        adapter.pushComment(comment, forumPack);
+        assert forumPack != null;
+        commentsAdapter.pushComment(comment, forumPack);
     }
 
+    /**
+     * Inflates the forum as a Text/Image forum
+     * @param position The position of the forum that needs to be inflated
+     * @param parent The view that the forum needs to be attached to
+     * @return The inflated view of the forum
+     */
     private View inflateTextForum(final int position, @NonNull ViewGroup parent){
 
 
@@ -240,10 +293,28 @@ public class ForumListAdapter extends ArrayAdapter<ForumPack> {
             Picasso.with(getContext()).load("none").into(forumImage);
         }
 
-        forumImage.setOnClickListener(listener3);
+        forumImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.setContentView(R.layout.dialog_view_forum_image);
+                ImageView imageView = dialog.findViewById(R.id.forumImageView);
+                Picasso.with(getContext())
+                        .load(getItem(position).getFileUpload())
+                        .placeholder(R.drawable.placeholder_forum_pic)
+                        .into(imageView);
+                dialog.show();
+            }
+        });
+
         return forumView;
     }
 
+    /**
+     * Inflates the forum as a Video forum
+     * @param position The position of the forum that needs to be inflated
+     * @param parent The view that the forum needs to be attached to
+     * @return The inflated view of the forum
+     */
     private View inflateVideoForum(final int position, ViewGroup parent) {
 
         LayoutInflater inflater = LayoutInflater.from(getContext());
@@ -255,11 +326,11 @@ public class ForumListAdapter extends ArrayAdapter<ForumPack> {
         videoStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mDialog.setContentView(R.layout.dialog_view_forum_video);
-                VideoView videoView = mDialog.findViewById(R.id.forumVideo);
+                dialog.setContentView(R.layout.dialog_view_forum_video);
+                VideoView videoView = dialog.findViewById(R.id.forumVideo);
                 videoView.setVideoURI(Uri.parse(getItem(position).getFileUpload()));
 
-                mDialog.show();
+                dialog.show();
                 videoView.start();
             }
         });
@@ -274,14 +345,25 @@ public class ForumListAdapter extends ArrayAdapter<ForumPack> {
         return forumView;
     }
 
+    /**
+     * Inflates the forum as a File forum
+     * @param position The position of the forum that needs to be inflated
+     * @param parent The view that the forum needs to be attached to
+     * @return The inflated view of the forum
+     */
     private View inflateFileForum(int position, ViewGroup parent) {
         return inflateTextForum(position, parent);
     }
 
+    /**
+     * Inflates the general elements of the forum
+     * @param position The position of the forum that needs to be inflated
+     * @param forumView The view that the forum needs to be inflated into
+     */
     private void commonInflate(final int position, @Nullable View forumView){
 
-        mDialog = new Dialog(getContext());
-        mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog = new Dialog(getContext());
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         final ForumPack currentForum = getItem(position);
         TextView sender = forumView.findViewById(R.id.senderName);
@@ -343,7 +425,7 @@ public class ForumListAdapter extends ArrayAdapter<ForumPack> {
             }
         });
 
-        View.OnClickListener commentViewListner = new View.OnClickListener() {
+        View.OnClickListener commentViewListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 commentButtonPressed(position);
@@ -353,12 +435,12 @@ public class ForumListAdapter extends ArrayAdapter<ForumPack> {
         View.OnClickListener listener2 = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mDialog.setContentView(R.layout.dialog_view_profile);
-                ImageView profileViewPic = mDialog.findViewById(R.id.profileViewPic);
-                TextView profileViewPhoneField = mDialog.findViewById(R.id.profileViewPhoneField);
-                TextView profileViewDateField = mDialog.findViewById(R.id.profileViewDateField);
-                TextView profileViewNameField = mDialog.findViewById(R.id.profileViewNameField);
-                TextView profileViewSectionField = mDialog.findViewById(R.id.profileViewSectionField);
+                dialog.setContentView(R.layout.dialog_view_profile);
+                ImageView profileViewPic = dialog.findViewById(R.id.profileViewPic);
+                TextView profileViewPhoneField = dialog.findViewById(R.id.profileViewPhoneField);
+                TextView profileViewDateField = dialog.findViewById(R.id.profileViewDateField);
+                TextView profileViewNameField = dialog.findViewById(R.id.profileViewNameField);
+                TextView profileViewSectionField = dialog.findViewById(R.id.profileViewSectionField);
 
                 profileViewNameField.setText(currentForum.getSender());
                 profileViewPhoneField.setText("Phone no: " + currentForum.getSenderNo());
@@ -378,14 +460,14 @@ public class ForumListAdapter extends ArrayAdapter<ForumPack> {
                             .centerCrop()
                             .into(profileViewPic);
 
-                mDialog.show();
+                dialog.show();
             }
         };
 
         profilePicture.setOnClickListener(listener2);
         sender.setOnClickListener(listener2);
 
-        listener3 = new View.OnClickListener() {
+        goToDedicatedViewListner = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getContext(), ForumDisplayActivity.class);
@@ -394,12 +476,12 @@ public class ForumListAdapter extends ArrayAdapter<ForumPack> {
             }
         };
 
-        subject.setOnClickListener(listener3);
-        mainText.setOnClickListener(listener3);
+        subject.setOnClickListener(goToDedicatedViewListner);
+        mainText.setOnClickListener(goToDedicatedViewListner);
 
 
-        commentCountDisplay.setOnClickListener(commentViewListner);
-        forumView.findViewById(R.id.commentButton).setOnClickListener(commentViewListner);
+        commentCountDisplay.setOnClickListener(commentViewListener);
+        forumView.findViewById(R.id.commentButton).setOnClickListener(commentViewListener);
 
         if (currentForum.isLiked())
             likeButton.setText("Unlike");

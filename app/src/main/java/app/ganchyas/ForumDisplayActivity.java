@@ -310,7 +310,7 @@ public class ForumDisplayActivity extends AppCompatActivity {
             }
         });
 
-        View.OnClickListener commentViewListner = new View.OnClickListener() {
+        View.OnClickListener commentViewListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 commentButtonPressed();
@@ -352,8 +352,8 @@ public class ForumDisplayActivity extends AppCompatActivity {
         profilePicture.setOnClickListener(listener2);
         sender.setOnClickListener(listener2);
 
-        commentCountDisplay.setOnClickListener(commentViewListner);
-        findViewById(R.id.commentButton).setOnClickListener(commentViewListner);
+        commentCountDisplay.setOnClickListener(commentViewListener);
+        findViewById(R.id.commentButton).setOnClickListener(commentViewListener);
 
         if (displayForum.isLiked())
             likeButton.setText("Unlike");

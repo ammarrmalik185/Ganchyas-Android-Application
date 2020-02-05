@@ -75,9 +75,7 @@ public class PatchesActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(PatchesActivity.this,"Unable to retrieve Patches Data"
-                ,Toast.LENGTH_SHORT
-                ).show();
+                CommonMethods.toastMessage(PatchesActivity.this, "Unable to get patch data");
             }
         };
 

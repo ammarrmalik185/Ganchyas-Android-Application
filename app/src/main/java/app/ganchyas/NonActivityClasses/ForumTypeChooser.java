@@ -19,11 +19,18 @@ import app.ganchyas.WriteNewForumTextActivity;
 import app.ganchyas.WriteNewForumVideoActivity;
 
 /**
- * @author Paradox;
+ * Controls a dialog fragment that appears when the add new forum is clicked. It lets the user choose from one of the 4 forum types
+ * @author Paradox
  */
-
 public class ForumTypeChooser extends BottomSheetDialogFragment {
 
+    /**
+     * Generates the UI of the Fragment
+     * @param inflater An Inflater object to inflate the layout
+     * @param container A parent view where the UI will be placed
+     * @param savedInstanceState An older instance of the fragment (if any)
+     * @return The inflated UI of the Fragment Instance
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

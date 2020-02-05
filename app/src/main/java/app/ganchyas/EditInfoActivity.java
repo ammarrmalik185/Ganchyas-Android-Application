@@ -51,12 +51,6 @@ public class EditInfoActivity extends AppCompatActivity {
     private EditText sectionField;
 
     /**
-     * Empty Constructor
-     */
-    public EditInfoActivity() {
-    }
-
-    /**
      * Overriding onCreate to Inflate custom UI using activity_edit_info.xml
      * @param savedInstanceState contains the old state of this UI
      */

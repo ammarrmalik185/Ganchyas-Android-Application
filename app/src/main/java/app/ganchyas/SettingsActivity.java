@@ -15,13 +15,20 @@ import java.io.IOException;
 import app.ganchyas.NonActivityClasses.CommonMethods;
 
 /**
- * @author Paradox;
+ * Allows the user to edit the app's preferences
+ * @author Paradox
  */
-
 public class SettingsActivity extends AppCompatActivity {
 
+    /**
+     * This contains the group of radio buttons that refers to the available themes
+     */
     RadioGroup colorSelector;
 
+    /**
+     * Overriding onCreate to Inflate custom UI using activity_edit_info.xml
+     * @param savedInstanceState contains the old state of this UI
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(CommonMethods.getPersonalTheme(getFilesDir()));
@@ -32,6 +39,10 @@ public class SettingsActivity extends AppCompatActivity {
         colorSelector.check(getThemeButtonId());
     }
 
+    /**
+     * Invoked when the apply button is pressed
+     * @param view The button that was pressed
+     */
     public void colorApplyButton(View view) {
         int id = colorSelector.getCheckedRadioButtonId();
         int theme = R.style.DarkTheme;
@@ -62,6 +73,10 @@ public class SettingsActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Gives the id of the appropriate radio button that needs to be checked
+     * @return Id of a radio button in the radio group
+     */
     private int getThemeButtonId(){
         int themeId = CommonMethods.getPersonalTheme(getFilesDir());
         if (themeId==R.style.DarkTheme)
@@ -76,6 +91,9 @@ public class SettingsActivity extends AppCompatActivity {
             return R.id.themeDark;
     }
 
+    /**
+     * Overwriting onBackPressed to recreate the MainActivity
+     */
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(this,MainActivity.class);

@@ -9,8 +9,8 @@ android {
         applicationId "app.ganchyas"
         minSdkVersion 16
         targetSdkVersion 29
-        versionCode 121
-        versionName "av1.21"
+        versionCode 122
+        versionName "av1.22"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

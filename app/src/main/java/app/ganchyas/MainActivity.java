@@ -120,7 +120,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        FirebaseMessaging.getInstance().subscribeToTopic("newForum");
+        FirebaseMessaging.getInstance().subscribeToTopic("allUsers");
+        FirebaseMessaging.getInstance().unsubscribeFromTopic("newForum");
         FirebaseMessaging.getInstance().subscribeToTopic(FirebaseAuth.getInstance().getInstance().getUid());
 
         setTheme(CommonMethods.getPersonalTheme(getFilesDir()));

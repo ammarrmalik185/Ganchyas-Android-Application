@@ -3,6 +3,9 @@ package app.ganchyas;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -27,6 +30,7 @@ import java.util.HashMap;
 import app.ganchyas.NonActivityClasses.CommonMethods;
 import app.ganchyas.NonActivityClasses.MessagePack;
 import app.ganchyas.NonActivityClasses.MessageViewAdapter;
+import app.ganchyas.NonActivityClasses.UserDataPack;
 
 /**
  * Messenger that the users interact with to send and view messages
@@ -75,6 +79,7 @@ public class MessengerActivity extends AppCompatActivity {
      * Field that the user type the message into
      */
     EditText messageView;
+    UserDataPack otherUser;
 
     /**
      * Overriding onCreate to Inflate custom UI using activity_messenger.xml
@@ -100,13 +105,11 @@ public class MessengerActivity extends AppCompatActivity {
         userListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                nameView.setText(
-                        dataSnapshot.child("userdata").child(userId).child("name").getValue().toString()
-                );
-                if (dataSnapshot.child("userdata").child(userId).child("profile picture").exists())
+                otherUser = new UserDataPack(dataSnapshot.child("userdata").child(userId));
+                nameView.setText(otherUser.getName());
+                if (otherUser.hasImage())
                     Picasso.with(MessengerActivity.this)
-                        .load(dataSnapshot.child("userdata").child(userId).child("profile picture").getValue().toString())
+                        .load(otherUser.getImageUri())
                         .placeholder(R.mipmap.ic_launcher_round)
                         .into(profilePicture);
                 else
@@ -152,6 +155,42 @@ public class MessengerActivity extends AppCompatActivity {
 
             }
         });
+
+        View.OnClickListener profileViewListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Dialog dialog = new Dialog(MessengerActivity.this);
+                dialog.setContentView(R.layout.dialog_view_profile);
+                ImageView profileViewPic = dialog.findViewById(R.id.profileViewPic);
+                TextView profileViewPhoneField = dialog.findViewById(R.id.profileViewPhoneField);
+                TextView profileViewDateField = dialog.findViewById(R.id.profileViewDateField);
+                TextView profileViewNameField = dialog.findViewById(R.id.profileViewNameField);
+                TextView profileViewSectionField = dialog.findViewById(R.id.profileViewSectionField);
+
+                profileViewNameField.setText(otherUser.getName());
+                profileViewPhoneField.setText("Phone no: " + otherUser.getPhoneNo());
+                profileViewDateField.setText("Birth Date: " + otherUser.getBirthDate());
+                profileViewSectionField.setText("Section: " + otherUser.getSection());
+
+                if (otherUser.hasImage())
+                    Picasso.with(MessengerActivity.this).load(otherUser.getImageUri())
+                            .placeholder(R.mipmap.ic_launcher_round)
+                            .resizeDimen(R.dimen.icon_2_size,R.dimen.icon_2_size)
+                            .centerCrop()
+                            .into(profileViewPic);
+                else
+                    Picasso.with(MessengerActivity.this).load(R.mipmap.ic_launcher_round)
+                            .placeholder(R.mipmap.ic_launcher_round)
+                            .resizeDimen(R.dimen.icon_2_size,R.dimen.icon_2_size)
+                            .centerCrop()
+                            .into(profileViewPic);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.show();
+            }
+        };
+
+        nameView.setOnClickListener(profileViewListener);
+        profilePicture.setOnClickListener(profileViewListener);
 
     }
 

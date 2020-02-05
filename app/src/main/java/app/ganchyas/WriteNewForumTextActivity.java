@@ -25,20 +25,62 @@ import java.util.HashMap;
 import app.ganchyas.NonActivityClasses.CommonMethods;
 
 /**
- * @author Paradox;
+ * Allow the user to post a forum with only text
+ * @author Paradox
  */
 
 public class WriteNewForumTextActivity extends AppCompatActivity {
 
-    DatabaseReference myDb;
-    FirebaseAuth mAuth;
+    /**
+     * Stores the reference of the root node of the Database
+     */
+    DatabaseReference completeDatabaseReference;
+    /**
+     * Stores the firebase authentication instance
+     */
+    FirebaseAuth firebaseAuth;
+    /**
+     * Contains the reference of all the forums in the database
+     */
     DatabaseReference forumDataRoot;
-    DataSnapshot dsSnap;
+    /**
+     * Contains the Snapshot of the entire database
+     */
+    DataSnapshot completeDatabaseSnapshot;
     DatabaseReference newForum;
-    EditText subject, mainText;
-    String identifier, subjectValue, mainTextValue, date;
+    /**
+     * Reference to the edit text on xml that the user enters subject of the forum into
+     */
+    EditText subject;
+    /**
+     * Reference to the edit text on xml that the user enters the main text of the forum into
+     */
+    EditText mainText;
+    /**
+     * Contains Unique identifier of the forum
+     */
+    String identifier;
+    /**
+     * Contains Subject of the forum
+     */
+    String subjectValue;
+    /**
+     * Contains Text of the forum
+     */
+    String mainTextValue;
+    /**
+     * Contains date of the forum
+     */
+    String date;
+    /**
+     * Shows when the forum is being uploaded
+     */
     ProgressDialog dialog;
 
+    /**
+     * Overriding onCreate to Inflate custom UI using activity_write_new_forum_text.xml
+     * @param savedInstanceState contains the old state of this UI
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(CommonMethods.getPersonalTheme(getFilesDir()));
@@ -46,14 +88,14 @@ public class WriteNewForumTextActivity extends AppCompatActivity {
         setContentView(R.layout.activity_write_new_forum_text);
 
         dialog = new ProgressDialog(WriteNewForumTextActivity.this);
-        myDb = FirebaseDatabase.getInstance().getReference();
-        mAuth = FirebaseAuth.getInstance();
-        forumDataRoot = myDb.child("forumData");
+        completeDatabaseReference = FirebaseDatabase.getInstance().getReference();
+        firebaseAuth = FirebaseAuth.getInstance();
+        forumDataRoot = completeDatabaseReference.child("forumData");
 
-        myDb.addValueEventListener(new ValueEventListener() {
+        completeDatabaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                dsSnap = dataSnapshot;
+                completeDatabaseSnapshot = dataSnapshot;
 
             }
 
@@ -68,6 +110,10 @@ public class WriteNewForumTextActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Invoked when the submit button is clicked
+     * @param view Contains the button that was pressed
+     */
     public void submitForumAction(View view) {
         subjectValue = subject.getText().toString();
         mainTextValue = mainText.getText().toString();
@@ -85,7 +131,7 @@ public class WriteNewForumTextActivity extends AppCompatActivity {
 
             HashMap<String, String> values = new HashMap<>();
             values.put("date", date);
-            values.put("sender",mAuth.getCurrentUser().getUid());
+            values.put("sender", firebaseAuth.getCurrentUser().getUid());
             values.put("mainText", mainTextValue);
             values.put("subject", subjectValue);
             values.put("type", "text");
@@ -95,16 +141,10 @@ public class WriteNewForumTextActivity extends AppCompatActivity {
             startActivity(intent);
 
         } else {
-            toastMessage("Subject is required");
+            CommonMethods.toastMessage(WriteNewForumTextActivity.this, "Subject is required");
         }
 
 
     }
-
-    private void toastMessage(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-    }
-
-
 
 }

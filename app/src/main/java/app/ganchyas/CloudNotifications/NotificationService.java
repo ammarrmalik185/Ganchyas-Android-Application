@@ -15,6 +15,7 @@ import com.google.firebase.messaging.RemoteMessage;
 
 import app.ganchyas.ForumDisplayActivity;
 import app.ganchyas.MessengerActivity;
+import app.ganchyas.PatchesActivity;
 import app.ganchyas.R;
 import app.ganchyas.NonActivityClasses.Notification;
 
@@ -23,6 +24,7 @@ import static app.ganchyas.ApplicationClasses.ApplicationStart.CHANNEL_1_ID;
 import static app.ganchyas.ApplicationClasses.ApplicationStart.CHANNEL_2_ID;
 import static app.ganchyas.ApplicationClasses.ApplicationStart.CHANNEL_3_ID;
 import static app.ganchyas.ApplicationClasses.ApplicationStart.CHANNEL_4_ID;
+import static app.ganchyas.ApplicationClasses.ApplicationStart.CHANNEL_5_ID;
 
 /**
  * Manages Notifications (Service)
@@ -57,7 +59,7 @@ public class NotificationService extends FirebaseMessagingService {
             if (!FirebaseAuth.getInstance().getCurrentUser().getUid().equals(initiator)) {
                 assert type != null;
                 // if type is not message, push to db else ignore
-                if (!type.equals("newMessage")) {
+                if (!type.equals("newMessage") && !type.equals("versionUpdate")) {
                     Notification notification = new Notification(remoteMessage);
                     notification.pushToDb();
                 }
@@ -76,6 +78,8 @@ public class NotificationService extends FirebaseMessagingService {
                     case "newMessage":
                         sendNotificationMessage(remoteMessage);
                         break;
+                    case "versionUpdate":
+                        sendNotificationUpdate(remoteMessage);
                     case "testNotification":
                         sendNotificationTest(remoteMessage);
                         break;
@@ -262,6 +266,38 @@ public class NotificationService extends FirebaseMessagingService {
         notificationManager.notify(id, notificationBuilder.build());
     }
 
+    /**
+     * Is invoked by the onMessageReceived when the type of the notification is forum
+     * @param remoteMessage contains the data of the notification
+     */
+    private void sendNotificationUpdate(RemoteMessage remoteMessage) {
+
+        // getting the notification data
+        String title = remoteMessage.getData().get("title");
+        String body = remoteMessage.getData().get("text");
+
+        // creating an intent for the notification
+        Intent intent = new Intent(this, PatchesActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 1 , intent,
+                PendingIntent.FLAG_ONE_SHOT);
+
+        // building the notification
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, CHANNEL_5_ID)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle(title)
+                .setContentText(body)
+                .setAutoCancel(true)
+                .setContentIntent(pendingIntent)
+                .setStyle(new NotificationCompat.BigTextStyle()
+                        .bigText(""));
+
+        // sending the notification
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        assert notificationManager != null;
+        notificationManager.notify(id /* ID of notification */, notificationBuilder.build());
+    }
 
 
 }
