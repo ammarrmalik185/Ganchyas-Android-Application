@@ -1,0 +1,31 @@
+Modules Completed:
+-ApplicationClasses
+-CloudNotifications
+-Root
+
+Completed Classes of Root:
+-EditInfoActivity.java
+-AddInfoActivity.java
+-ForumDisplayActivity.java
+-ForumFragment.java
+-LocationFragment.java
+-LoginActivity.java
+-MainActivity.java
+-MessagingFragment.java
+-MessengerActivity.java
+-SettingsActivity.java
+-WriteNewForumText.java
+-WriteNewForumImage.java
+-WriteNewForumVideo.java
+
+Completed Classes of NonActivityClasses
+-CommentPack.java
+-CommentsAdapter.java
+-CommonMethods.java
+-ConversationListAdapter.java
+-ConversationPack.java
+-FirebaseCallback.java <<interface>>
+-ForumTypeChooser.java
+-ForumListAdapter.java
+-ForumTypeChooser.java
+-LikersDislikersAdapter.java
