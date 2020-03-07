@@ -77,7 +77,7 @@
         android:background="?attr/baseColor1"
         android:backgroundTint="?attr/baseColor1"
         android:onClick="uploadFileAction"
-        android:text="Upload File"
+        android:text="Upload Image"
         android:textColor="?attr/baseColorInvert"
         android:textColorHint="?attr/baseColor1"
         android:textColorLink="?attr/baseColor1" />

@@ -61,8 +61,7 @@ public class PatchesListAdapter extends ArrayAdapter<PatchPack> {
                 TextView confirmationMessage = dialog.findViewById(R.id.confirmationMessage);
                 Button choice1 = dialog.findViewById(R.id.choice1);
                 Button choice2 = dialog.findViewById(R.id.choice2);
-                confirmationMessage.setText("Download patch " + getItem(position).getVersionNo()
-                                                + " ?");
+                confirmationMessage.setText("Download patch " + getItem(position).getVersionNo() + " ?");
                 choice1.setText("Yes");
                 choice2.setText("No");
                 choice2.setOnClickListener(new View.OnClickListener() {
@@ -94,44 +93,44 @@ public class PatchesListAdapter extends ArrayAdapter<PatchPack> {
         return patchView;
     }
 
-    private void installVersion(int position) {
-        File apkFile = null;
-
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            apkFile = new File(getContext().getFilesDir().getAbsolutePath() + "installPackage.apk");
-        }
-        boolean downloaded = downloadFile(getItem(position).getDownloadLink(), apkFile);
-        if (downloaded){
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setDataAndType(Uri.fromFile(apkFile), "application/vnd.android.package-archive");
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getContext().startActivity(intent);
-        }
-    }
-
-    private boolean downloadFile(String url, File outputFile) {
-        try {
-            URL u = new URL(url);
-            URLConnection conn = u.openConnection();
-            int contentLength = conn.getContentLength();
-
-            DataInputStream stream = new DataInputStream(u.openStream());
-
-            byte[] buffer = new byte[contentLength];
-            stream.readFully(buffer);
-            stream.close();
-
-            DataOutputStream fos = new DataOutputStream(new FileOutputStream(outputFile));
-            fos.write(buffer);
-            fos.flush();
-            fos.close();
-            return true;
-        } catch(FileNotFoundException e) {
-            CommonMethods.toastMessage(getContext(), "Unable to find required apk");
-            return false;
-        } catch (IOException e) {
-            CommonMethods.toastMessage(getContext(), "Unable to find required apk");
-            return false;
-        }
-    }
+//    private void installVersion(int position) {
+//        File apkFile = null;
+//
+//        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+//            apkFile = new File(getContext().getFilesDir().getAbsolutePath() + "installPackage.apk");
+//        }
+//        boolean downloaded = downloadFile(getItem(position).getDownloadLink(), apkFile);
+//        if (downloaded){
+//            Intent intent = new Intent(Intent.ACTION_VIEW);
+//            intent.setDataAndType(Uri.fromFile(apkFile), "application/vnd.android.package-archive");
+//            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            getContext().startActivity(intent);
+//        }
+//    }
+//
+//    private boolean downloadFile(String url, File outputFile) {
+//        try {
+//            URL u = new URL(url);
+//            URLConnection conn = u.openConnection();
+//            int contentLength = conn.getContentLength();
+//
+//            DataInputStream stream = new DataInputStream(u.openStream());
+//
+//            byte[] buffer = new byte[contentLength];
+//            stream.readFully(buffer);
+//            stream.close();
+//
+//            DataOutputStream fos = new DataOutputStream(new FileOutputStream(outputFile));
+//            fos.write(buffer);
+//            fos.flush();
+//            fos.close();
+//            return true;
+//        } catch(FileNotFoundException e) {
+//            CommonMethods.toastMessage(getContext(), "Unable to find required apk");
+//            return false;
+//        } catch (IOException e) {
+//            CommonMethods.toastMessage(getContext(), "Unable to find required apk");
+//            return false;
+//        }
+//    }
 }

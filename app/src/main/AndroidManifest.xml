@@ -17,7 +17,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppThemeDark"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".PatchesActivity"></activity>
+        <activity android:name=".WriteNewForumFileActivity"></activity>
+        <activity android:name=".PatchesActivity" />
         <activity android:name=".WriteNewForumVideoActivity" />
         <activity
             android:name=".MessengerActivity"

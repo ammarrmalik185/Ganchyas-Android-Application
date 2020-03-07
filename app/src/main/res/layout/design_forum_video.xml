@@ -87,7 +87,7 @@
             android:layout_width="250dp"
             android:layout_height="250dp"
             android:layout_gravity="center"
-            android:background="@drawable/placeholder_video_play_500dp" />
+            android:background="@drawable/forum_video_play_500dp" />
 
         <View
             android:id="@+id/view"

@@ -83,12 +83,16 @@ public class ForumPack {
      * Type of the current forum (image/ text/ video or file)
      */
     private String type;
-
+    /**
+     * The display name of the attached file
+     */
+    private String fileDisplayName;
     /**
      * Gets the data from database snapshot and assigns values
      * @param mainSnap Snapshot of the entire database
      * @param forumSnap Snapshot of the current forum in the database
      */
+
     public ForumPack(DataSnapshot mainSnap, DataSnapshot forumSnap) {
 
         forumId = forumSnap.getKey();
@@ -156,6 +160,9 @@ public class ForumPack {
                 type = forumSnap.child("type").getValue().toString();
             }
         }
+
+        if (forumSnap.child("fileName").exists())
+            fileDisplayName = forumSnap.child("fileName").getValue().toString();
     }
 
     /**
@@ -329,6 +336,14 @@ public class ForumPack {
      */
     public String getType() {
         return type;
+    }
+
+    /**
+     * Getter method
+     * @return File Display Name
+     */
+    public String getFileDisplayName() {
+        return fileDisplayName;
     }
 
     /**

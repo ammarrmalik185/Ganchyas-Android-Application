@@ -335,13 +335,6 @@ public class ForumListAdapter extends ArrayAdapter<ForumPack> {
             }
         });
 
-
-//        final MediaController mediaController = new MediaController(getContext());
-//        videoView.setMediaController(mediaController);
-//        mediaController.setAnchorView(videoView);
-//
-//        mediaController.hide()
-
         return forumView;
     }
 
@@ -351,8 +344,24 @@ public class ForumListAdapter extends ArrayAdapter<ForumPack> {
      * @param parent The view that the forum needs to be attached to
      * @return The inflated view of the forum
      */
-    private View inflateFileForum(int position, ViewGroup parent) {
-        return inflateTextForum(position, parent);
+    private View inflateFileForum(final int position, ViewGroup parent) {
+        LayoutInflater inflater = LayoutInflater.from(getContext());
+        View forumView = inflater.inflate(R.layout.design_forum_file, parent, false);
+        commonInflate(position, forumView);
+
+        View downloadFileButton = forumView.findViewById(R.id.forumDownloadFile);
+        TextView fileNameView = forumView.findViewById(R.id.forumFileName);
+
+        fileNameView.setText(getItem(position).getFileDisplayName());
+        downloadFileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getItem(position).getFileUpload()));
+                getContext().startActivity(browserIntent);
+            }
+        });
+
+        return forumView;
     }
 
     /**
@@ -500,5 +509,7 @@ public class ForumListAdapter extends ArrayAdapter<ForumPack> {
         });
 
     }
+
+
 
 }

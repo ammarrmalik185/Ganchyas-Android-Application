@@ -14,6 +14,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import app.ganchyas.R;
+import app.ganchyas.WriteNewForumFileActivity;
 import app.ganchyas.WriteNewForumImageActivity;
 import app.ganchyas.WriteNewForumTextActivity;
 import app.ganchyas.WriteNewForumVideoActivity;
@@ -68,7 +69,9 @@ public class ForumTypeChooser extends BottomSheetDialogFragment {
         fileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "feature not available yet", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getContext(), WriteNewForumFileActivity.class);
+                startActivity(intent);
+                dismiss();
             }
         });
         return view;

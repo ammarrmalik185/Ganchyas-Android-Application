@@ -4,10 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -103,7 +105,9 @@ public class ForumDisplayActivity extends AppCompatActivity {
                         typeInflateVideo();
                         break;
                     case "file":
-                        setContentView(R.layout.activity_forum_display);
+                        setContentView(R.layout.activity_forum_display_file);
+                        typeInflateFile();
+                        break;
                     default:
                         setContentView(R.layout.activity_forum_display);
                 }
@@ -116,8 +120,6 @@ public class ForumDisplayActivity extends AppCompatActivity {
 
             }
         });
-
-
     }
 
     /**
@@ -427,6 +429,20 @@ public class ForumDisplayActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    private void typeInflateFile(){
+        View downloadFileButton = findViewById(R.id.forumDownloadFile);
+        TextView fileNameView = findViewById(R.id.forumFileName);
+
+        fileNameView.setText(displayForum.getFileDisplayName());
+        downloadFileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(displayForum.getFileUpload()));
+                startActivity(browserIntent);
+            }
+        });
     }
 
 }
